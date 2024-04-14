@@ -19,10 +19,6 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Scanner;
 
-/**
- * This class represents a graphical user interface (GUI) for a peg game.
- * The GUI allows users to interact with the peg game, make moves, save the game, and exit.
- */
 public class PegGameGUI1 extends Application {
     private SquarePegGame squarePegGame;
     private GridPane gridPane;
@@ -36,14 +32,6 @@ public class PegGameGUI1 extends Application {
     private Label moveCounterLabel;
     private int moveCounter = 0;
 
-
-/**
- * Initializes the graphical user interface.
- * This method sets up the layout, buttons, labels, and event handlers.
- *
- * @param primaryStage The primary stage of the JavaFX application.
- * @throws IOException If an I/O error occurs while initializing the GUI.
- */
 @Override
 
     public void start(Stage primaryStage) throws IOException{
@@ -103,9 +91,6 @@ for (Move move : possibleMoves) {
             scanner.close();
     }
 
-    /**
-     * Initializes the GUI layout and grid.
-     */    
 private void initializeGUI() {
         gridPane.setPadding(new Insets(10));
         gridPane.setHgap(5);
@@ -145,11 +130,6 @@ private void initializeGUI() {
         }
     }
 
-    /**
-     * Creates the control pane containing save, exit, and game state buttons.
-     *
-     * @return The HBox containing the control buttons.
-     */
     private HBox createControlPane() {
         HBox controlPane = new HBox(10); // Spacing between buttons
         controlPane.setPadding(new Insets(10));
@@ -176,9 +156,6 @@ private void initializeGUI() {
         return controlPane;
     }
       
-    /**
-     * Updates the GUI board based on the current state of the peg game.
-     */
     private void updateBoard() {
         int[][] board = squarePegGame.getBoard();
     
@@ -199,13 +176,6 @@ private void initializeGUI() {
         }
     }
     
-    /**
-     * Handles button click events.
-     *
-     * @param button The button that was clicked.
-     * @param row    The row index of the button in the grid.
-     * @param col    The column index of the button in the grid.
-     */
 private void buttonClick(Button button, int row, int col) {
         if (selectedButton == null) {
             // First click: select peg
@@ -252,9 +222,6 @@ private void buttonClick(Button button, int row, int col) {
         }
     }
 
-    /**
-     * Updates the possible moves label based on the current state of the peg game.
-     */
     private void updatePossibleMovesLabel() {
         Collection<Move> possibleMoves = squarePegGame.getPossibleMoves();
         StringBuilder movesStringBuilder = new StringBuilder("Possible Moves:\n");
@@ -271,9 +238,6 @@ private void buttonClick(Button button, int row, int col) {
         possibleMovesLabel.setText(movesStringBuilder.toString());
     }
 
-    /**
-     * Saves the current state of the peg game to a file.
-     */
     private void saveGame() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save Game");
@@ -304,9 +268,7 @@ private void buttonClick(Button button, int row, int col) {
     }
     
 
-    /**
-     * Exits the peg game application.
-     */
+
     private void exitGame(){
         Stage stage = (Stage) gridPane.getScene().getWindow();
             stage.close();

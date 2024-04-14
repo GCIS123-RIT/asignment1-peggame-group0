@@ -22,7 +22,7 @@ public class CLI {
 
             while (pegGame.getGameState() == GameState.IN_PROGRESS) {
                 System.out.print("Enter your move (e.g., move r1 c1 r2 c2) or 'quit' to exit: ");
-                String input = scanner.nextLine().trim();
+                String input = scanner.nextLine();
 
                 if (input.equalsIgnoreCase("quit")) {
                     System.out.println("Goodbye!");
@@ -34,7 +34,7 @@ public class CLI {
                     continue;
                 }
 
-                // Extract integers from input
+                // Extract integers from input by turning string into an array of string
                 String[] parts = input.substring(5).split("\\s+");
                 if (parts.length != 4) {
                     System.out.println("Error: Invalid move format, use format (move r1 c1 r2 c2)");

@@ -18,6 +18,13 @@ public int[][] getBoard()  {
         return board;
     }
 
+    public int getRow(){
+        return this.rows;
+    }
+    public int getcol(){
+        return this.cols;
+    }
+
     /**
  * Initiallizing the board that the peg game will be played on
  * The center hole is calculated by dividing the number of rows and coloumns 
@@ -311,23 +318,24 @@ public Collection<Move> getPossibleMoves() {
      * Changes the peg that was jumped from into an empty hole
      */
     @Override
-    public void makeMove(Move move) throws pegGameException {
-        Location from = move.getFrom();
-        Location to = move.getTo();
-        int jumpRow = (from.getRow() + to.getRow()) / 2;
-        int jumpCol = (from.getColoumn() + to.getColoumn()) / 2;
+public void makeMove(Move move) throws pegGameException {
+    Location from = move.getFrom();
+    Location to = move.getTo();
 
-        // Check if the move is valid
-        if (!isValidMove(from, to, jumpRow, jumpCol)) {
-            throw new pegGameException("Invalid move.");
-        }
-
-        // Perform the move
-        board[from.getRow()][from.getColoumn()] = 0;
-        board[jumpRow][jumpCol] = 0;
-        board[to.getRow()][to.getColoumn()] = 1;
-        System.out.println("\n");
+    // Check if the move is valid
+    if (!isValidMove(from, to)) {
+        throw new pegGameException("Invalid move.");
     }
+
+    // Perform the move
+    int jumpRow = (from.getRow() + to.getRow()) / 2;
+    int jumpCol = (from.getColoumn() + to.getColoumn()) / 2;
+
+    board[from.getRow()][from.getColoumn()] = 0;
+    board[jumpRow][jumpCol] = 0;
+    board[to.getRow()][to.getColoumn()] = 1;
+}
+
 /**
  * This method checks if the move being made is valid or not
  * @param from is the starting coordinate
@@ -336,18 +344,42 @@ public Collection<Move> getPossibleMoves() {
  * @param jumpCol is coloumn that will be jumped over
  * @return's boolean expression
  */
-    private boolean isValidMove(Location from, Location to, int jumpRow, int jumpCol) {
-        if (!isValidLocation(from) || !isValidLocation(to)) {
-            return false;
-        }
-        if (board[from.getRow()][from.getColoumn()] != 1) {
-            return false;
-        }
-        if (board[jumpRow][jumpCol] != 1) {
-            return false;
-        }
-        return board[to.getRow()][to.getColoumn()] == 0;
+private boolean isValidMove(Location from, Location to) {
+    int fromRow = from.getRow();
+    int fromCol = from.getColoumn();
+    int toRow = to.getRow();
+    int toCol = to.getColoumn();
+
+    // Check if 'from' location is within bounds and contains a peg
+    if (!isValidLocation(from) || board[fromRow][fromCol] != 1) {
+        return false;
     }
+
+    // Check if 'to' location is within bounds and is an empty hole
+    if (!isValidLocation(to) || board[toRow][toCol] != 0) {
+        return false;
+    }
+
+    // Calculate the row and column of the peg that will be jumped over
+    int jumpRow = (fromRow + toRow) / 2;
+    int jumpCol = (fromCol + toCol) / 2;
+
+    // Check if the jump location contains a peg
+    if (board[jumpRow][jumpCol] != 1) {
+        return false;
+    }
+
+    // Determine the type of move and check if it's valid
+    if (fromRow == toRow) { // Horizontal move
+        return Math.abs(fromCol - toCol) == 2; // Must move two columns horizontally
+    } else if (fromCol == toCol) { // Vertical move
+        return Math.abs(fromRow - toRow) == 2; // Must move two rows vertically
+    } else { // Diagonal move
+        return Math.abs(fromRow - toRow) == 2 && Math.abs(fromCol - toCol) == 2; // Must move two rows and two columns diagonally
+    }
+}
+
+
 /**
  * This method checks if the coordinates are within the board boundries
  * @param loc is the location of the peg

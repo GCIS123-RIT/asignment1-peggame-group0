@@ -30,7 +30,7 @@ public class BoardReader {
  */
 
  
-public PegGame readFromFile() throws IOException{
+public SquarePegGame readFromFile() throws IOException{
     FileReader fileReader = new FileReader(filename);
     BufferedReader bufferReader = new BufferedReader(fileReader); 
     int size = Integer.parseInt(bufferReader.readLine());
